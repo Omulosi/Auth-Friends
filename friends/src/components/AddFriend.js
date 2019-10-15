@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { axiosWithAuth } from './auth';
+import { FriendsContext } from '../context';
 
+const api = `http://localhost:5000/api/friends`;
 const AddFriend = (props) => {
-  
-  const [friend, setFriend] = useState({name:'', age: null, email:''})
+  const [_, setFriends] = useContext(FriendsContext)
+  const [friend, setFriend] = useState({name:'', age: '', email:''})
 
   const handleChange = (e) => {
     setFriend({...friend, [e.target.name]: [e.target.value]})
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (friend) {
+      axiosWithAuth().post(api, friend)
+        .then(res => {
+          setFriends(res.data);
+          props.history.push('/friends')
+        })
+    }
+    
   }
 
-
-
   return (
-    <div className="add-friend-form">
+    <div className="form-data">
       <div className="login-header mb-4">
         Add Friend
       </div>
@@ -25,9 +34,9 @@ const AddFriend = (props) => {
           <input
             id="username"
             type='text'
-            name='username'
+            name='name'
             onChange={handleChange}
-            value={friend.username}
+            value={friend.name}
             required
             className="form-control"
           />
@@ -38,7 +47,7 @@ const AddFriend = (props) => {
               type='number'
               name='age'
               onChange={handleChange}
-              value={friend.password}
+              value={friend.age}
               required
               className="form-control"
             />

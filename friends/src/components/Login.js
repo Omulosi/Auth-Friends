@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { axiosWithAuth } from './auth';
 
+
 const API = `http://localhost:5000/api/login`;
 const Login = (props) => {
    
@@ -32,7 +33,7 @@ const Login = (props) => {
   
     return (
 
-        <div className="login-form">
+        <div className="form-data">
           <div className="login-header mb-4">
             Sign In
           </div>

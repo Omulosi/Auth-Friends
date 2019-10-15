@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import FriendItem from './FriendItem';
 import { axiosWithAuth } from './auth';
+import { FriendsContext } from '../context';
 
 const Home = (props) => {
-  const [friends, setFriends] = useState([])
+  const [friends, setFriends] = useContext(FriendsContext)
   const [error, setError] = useState(null);
 
   useEffect(() => {
