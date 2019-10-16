@@ -1,35 +1,21 @@
 import React, { useState } from "react";
-import axios from 'axios';
-import { axiosWithAuth } from './auth';
+import { useAuth } from '../utils/auth';
 
 
-const API = `http://localhost:5000/api/login`;
 const Login = (props) => {
-   
-    const [credentials, setCredentials] = useState({
-      username: '',
-      password: ''
-    });
-    const [error, setError] = useState(null);
+  const {authState, login } = useAuth();
+  const [user, setUser] = useState({username: '', password: ''});
   
-    const handleChange = event => {
-      event.preventDefault();
-      setCredentials({...credentials, [event.target.name]: event.target.value });
-    };
+  const handleChange = event => {
+    setUser({...user, [event.target.name]: event.target.value });
+  };
   
-    const handleSubmit = event => {
-      setError(null);
-      event.preventDefault();
-      axiosWithAuth().post(`${API}`, credentials)
-        .then(res => {
-          debugger
-          localStorage.setItem('token', res.data.payload);
-          props.history.push('/friends')
-        })
-        .catch(error => {
-          setError(error.response.data.error)
-        })
-    }
+  const handleSubmit = event => {
+    event.preventDefault();
+    login(user);
+  }
+
+  debugger
   
     return (
 
@@ -38,7 +24,7 @@ const Login = (props) => {
             Sign In
           </div>
           <form className='input-form' onSubmit={handleSubmit} method="post">      
-            <div className="error mb-2">{error && error}</div>
+            <div className="error mb-2">{authState.error && authState.error}</div>
             <div className="form-group">
               <label htmlFor="username">Email or Username</label>
               <input
@@ -46,7 +32,7 @@ const Login = (props) => {
                 type='text'
                 name='username'
                 onChange={handleChange}
-                value={credentials.username}
+                value={user.username}
                 required
                 className="form-control"
               />
@@ -57,7 +43,7 @@ const Login = (props) => {
                   type='password'
                   name='password'
                   onChange={handleChange}
-                  value={credentials.password}
+                  value={user.password}
                   required
                   className="form-control"
                 />

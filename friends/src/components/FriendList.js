@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
 import FriendItem from './FriendItem';
-import { axiosWithAuth } from './auth';
+import { axiosWithAuth } from '../utils/auth';
 import { FriendsContext } from '../context';
+import { addFriend } from '../store/actions/actions';
 
 const Home = (props) => {
-  const [friends, setFriends] = useContext(FriendsContext)
+  const [friends, dispatch] = useContext(FriendsContext)
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setError(null);
     axiosWithAuth().get('http://localhost:5000/api/friends')
       .then(res => {
-        setFriends(res.data)
+        dispatch(addFriend(res.data));
       })
       .catch(error => {
         setError(error.response.data.message)

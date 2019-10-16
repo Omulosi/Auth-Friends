@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { axiosWithAuth } from './auth';
+import { axiosWithAuth } from '../utils/auth';
 import { FriendsContext } from '../context';
 
 const api = `http://localhost:5000/api/friends`;
