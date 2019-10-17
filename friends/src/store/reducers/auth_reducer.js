@@ -1,6 +1,6 @@
 import * as ACTION_TYPES from '../actions/action_types';
 
-const initialState = {
+export const initialState = {
   isAuthenticated: false,
   error: null
 }

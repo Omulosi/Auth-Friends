@@ -5,7 +5,7 @@ import { FriendsContext } from '../context';
 import { addFriend } from '../store/actions/actions';
 
 const Home = (props) => {
-  const [friends, dispatch] = useContext(FriendsContext)
+  const [{friends}, dispatch] = useContext(FriendsContext)
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,13 +14,14 @@ const Home = (props) => {
       .then(res => {
         dispatch(addFriend(res.data));
       })
-      .catch(error => {
-        setError(error.response.data.message)
+      .catch(err => {
+        setError(err.response.data.error)
       })
   }, [])
 
   return (
     <div className="table-md">
+      <div className="error">{error && error}</div>
       <table className="table table-striped table-dark">
         <thead>
           <tr>
@@ -28,12 +29,14 @@ const Home = (props) => {
             <th scope="col">Name</th>
             <th scope="col">Age</th>
             <th scope="col">Email</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           {
             friends.map((friend) => (
-              <FriendItem friend={friend} key={friend.id}/>
+              <FriendItem friend={friend} key={friend.id} {...props}/>
             ))
           }
         </tbody>

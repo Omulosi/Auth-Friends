@@ -18,17 +18,10 @@ export const loginSuccess = () => {
   }
 }
 
-export const loginFailure = () => {
+export const loginFailure = (data) => {
   return {
-    type: ACTION_TYPES.LOGIN_FAILURE
-  }
-}
-
-
-export const user_input_submit = (text) => {
-  return {
-    type: ACTION_TYPES.USER_INPUT_SUBMIT,
-    payload: text
+    type: ACTION_TYPES.LOGIN_FAILURE,
+    payload: data
   }
 }
 
@@ -47,6 +40,13 @@ export const deleteFriend = (data) => {
 export const editFriend = (data) => {
   return {
     type: ACTION_TYPES.EDIT_FRIEND,
+    payload: data
+  }
+}
+
+export const setCurrentFriend = (data) => {
+  return {
+    type: ACTION_TYPES.SET_FRIEND,
     payload: data
   }
 }

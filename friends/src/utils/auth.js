@@ -1,6 +1,6 @@
 import { useContext, useReducer } from 'react';
 import axios from 'axios';
-import { AuthReducer } from '../store/reducers/auth_reducer';
+import { AuthReducer, initialState } from '../store/reducers/auth_reducer';
 import {loginSuccess, loginFailure } from '../store/actions/actions'
 import { AuthContext } from '../context';
 
@@ -25,8 +25,7 @@ export const useAuth = () => {
 
 export const useProvideAuth = () => {
 
-  const [authState, dispatch] = useReducer(AuthReducer);
-  debugger
+  const [authState, dispatch] = useReducer(AuthReducer, initialState);
 
   const login = (user, props) => {
 
@@ -37,6 +36,7 @@ export const useProvideAuth = () => {
         props.history.push('/friends')
       })
       .catch(error => {
+        debugger
         dispatch(loginFailure(error.response.data.error));
       })
   };
@@ -50,6 +50,8 @@ export const useProvideAuth = () => {
     authState,
     login,
     logout,
+    dispatch
   };
 
 }
+

@@ -1,8 +1,4 @@
-
-import React, { useState, useReducer, createContext } from 'react';
-import * as ACTIONS from './store/actions/actions';
-import { AuthReducer } from './store/reducers/auth_reducer';
-import { FormReducer } from './store/reducers/form_reducer';
+import React, { useReducer, createContext } from 'react';
 import { FriendsReducer } from './store/reducers/friends_reducer';
 import { useProvideAuth } from './utils/auth';
 
@@ -12,7 +8,9 @@ export const AuthContext = createContext();
 export const FormContext = createContext();
 
 export const FriendsContextProvider = props => {
-  const friendsHook = useReducer(FriendsReducer);
+  
+  const friendsHook = useReducer(FriendsReducer,
+    {friends: [], current: {name:'', age:'',email:''}});
 
   return (
     <FriendsContext.Provider value={friendsHook}>
@@ -30,14 +28,3 @@ export const AuthContextProvider = props => {
     </AuthContext.Provider>
   )
 }
-
-export const FormContextProvider = props => {
-  const formHook = useReducer(FormReducer);
-
-  return (
-    <FormContext.Provider value={formHook}>
-      {props.children}
-    </FormContext.Provider>
-  )
-}
-
