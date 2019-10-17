@@ -17,3 +17,10 @@
   color: red;
   font-size: 0.9em;
 }
+.nav-item > span {
+  cursor: pointer;
+}
+
+.icon {
+  cursor: pointer;
+}

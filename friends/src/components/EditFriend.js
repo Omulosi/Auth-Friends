@@ -1,23 +1,30 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { axiosWithAuth } from '../utils/auth';
 import { FriendsContext } from '../context';
+import { editFriend } from '../store/actions/actions';
 
-const api = `http://localhost:5000/api/friends`;
-const AddFriend = (props) => {
-  const [_, setFriends] = useContext(FriendsContext)
-  const [friend, setFriend] = useState({name:'', age: '', email:''})
+const api = `http://localhost:5000/api/friends/`;
+
+const EditFriend = (props) => {
+  const [{friends, current}, dispatch] = useContext(FriendsContext)
+  const [friend, setFriend] = useState(current)
+  const id = props.match.params.id;
 
   const handleChange = (e) => {
     setFriend({...friend, [e.target.name]: [e.target.value]})
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, id) => {
     e.preventDefault();
+    const url = `${api}${id}`;
     if (friend) {
-      axiosWithAuth().post(api, friend)
+      axiosWithAuth().put(url, friend)
         .then(res => {
-          setFriends(res.data);
+          dispatch(editFriend(res.data));
           props.history.push('/friends')
+        })
+        .catch(err => {
+          console.log(err)
         })
     }
     
@@ -26,9 +33,9 @@ const AddFriend = (props) => {
   return (
     <div className="form-data">
       <div className="login-header mb-4">
-        Add Friend
+        Edit Friend
       </div>
-      <form className='input-form' onSubmit={handleSubmit} method="post">      
+      <form className='input-form' onSubmit={(e) => handleSubmit(e, id)} method="post">      
         <div className="form-group">
           <label htmlFor="username">Name</label>
           <input
@@ -63,10 +70,10 @@ const AddFriend = (props) => {
               className="form-control"
             />
         </div>
-        <button className="btn btn-primary">Add Friend</button>
+        <button className="btn btn-primary">Edit Friend</button>
       </form>
     </div>
   );
 };
 
-export default AddFriend;
+export default EditFriend;
